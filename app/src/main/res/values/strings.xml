@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Dice Roller</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string name="msg_subscribed">Subscribed to diceUser</string>
+    <string name="msg_unsubscribed">UnSubscribed to diceUser</string>
+    <string name="msg_subscribe_failed">Failed to subscribe to diceUser</string>
+    <string name="msg_unsubscribed_failed">Failed to unsubscribe to diceUser</string>
+</resources>

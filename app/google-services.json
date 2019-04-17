@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "264304727189",
+    "firebase_url": "https://rollie-764ac.firebaseio.com",
+    "project_id": "rollie-764ac",
+    "storage_bucket": "rollie-764ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264304727189:android:6170ec1ec3d120b0",
+        "android_client_info": {
+          "package_name": "com.android.diceroller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "264304727189-2fjjl2jbf08lmmobv73mjd9b10gu4pe6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.diceroller",
+            "certificate_hash": "2e21dd524d0e4bda1d3fee81d9012ed6ef888a62"
+          }
+        },
+        {
+          "client_id": "264304727189-1b72s512pa81id8ihr0i4ktfm2l3bkbr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfoRkyeWfwOYzkpToG1DE1-QX1ql5US4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "264304727189-1b72s512pa81id8ihr0i4ktfm2l3bkbr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
