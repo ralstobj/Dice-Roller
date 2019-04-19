@@ -54,6 +54,7 @@ public class ItemGridFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.grid, container, false);
+        currentSession = getArguments().getString("sessionId");
         mService = ApiUtils.getDiceService();
         FirebaseMessaging.getInstance().subscribeToTopic("diceUser")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

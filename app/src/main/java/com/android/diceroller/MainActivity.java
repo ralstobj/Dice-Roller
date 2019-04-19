@@ -2,20 +2,15 @@ package com.android.diceroller;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-
-import com.google.android.material.bottomappbar.BottomAppBar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import static com.google.android.material.bottomappbar.BottomAppBar.FAB_ALIGNMENT_MODE_END;
 
-
-public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, JoinFragment.OnSessionEnteredListener {
 
 
 
@@ -25,10 +20,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         setContentView(R.layout.activity_main);
 
-        //bottomAppBar = findViewById(R.id.bar);
-
-        //set bottom bar to Action bar as it is similar like Toolbar
-        //setSupportActionBar(bottomAppBar);
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState != null) {
                 return;
@@ -42,11 +33,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public void onItemSelected(long id) {
 
     }
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.bottom_menu, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -55,6 +42,26 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public void sessionEntered(String sessionId) {
+            ItemGridFragment newFragment = new ItemGridFragment();
+            Bundle args = new Bundle();
+            args.putString("sessionId", sessionId);
+            newFragment.setArguments(args);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, newFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        if (fragment instanceof JoinFragment) {
+            JoinFragment joinFragment = (JoinFragment) fragment;
+            joinFragment.setSession(this);
+        }
     }
 }
 
