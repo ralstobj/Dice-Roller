@@ -238,25 +238,5 @@ public class ItemGridFragment extends Fragment implements AdapterView.OnItemClic
             }
         });
     }
-    public void createSession(String user){
-        Username username = new Username(user);
-        mService.createSession(username).enqueue(new Callback<CreatorInfo>() {
-            @Override
-            public void onResponse(Call<CreatorInfo> call, Response<CreatorInfo> response) {
 
-                if(response.isSuccessful()) {
-                    //TODO Get token and sessionId and do something
-                    //response.body().getSessionId();
-                    //response.body().getToken();
-                }else {
-                    int statusCode  = response.code();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CreatorInfo> call, Throwable t) {
-
-            }
-        });
-    }
 }

@@ -10,4 +10,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- The launcher theme. It sets the main window background to the launch_screen drawable -->
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item> -->
+    </style>
+
 </resources>

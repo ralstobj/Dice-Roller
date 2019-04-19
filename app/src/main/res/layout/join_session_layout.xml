@@ -15,7 +15,7 @@
             android:id="@+id/join_session_text"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:inputType="textCapCharacters"
+            android:inputType="text"
             android:hint="Enter Session Code"
             android:textAlignment="center"/>
 

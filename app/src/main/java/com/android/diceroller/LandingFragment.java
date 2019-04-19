@@ -37,6 +37,8 @@ public class LandingFragment extends Fragment implements View.OnClickListener {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, joinFragment).addToBackStack(null).commit();
                 break;
             case R.id.landing_create:
+                CreateFragment createFragment = new CreateFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, createFragment).addToBackStack(null).commit();
                 break;
         }
     }

@@ -10,12 +10,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 
-public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, JoinFragment.OnSessionEnteredListener {
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, JoinFragment.OnSessionEnteredListener, CreateFragment.OnSessionCreatedListener {
 
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -46,14 +47,14 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     @Override
     public void sessionEntered(String sessionId) {
-            ItemGridFragment newFragment = new ItemGridFragment();
-            Bundle args = new Bundle();
-            args.putString("sessionId", sessionId);
-            newFragment.setArguments(args);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, newFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+        ItemGridFragment newFragment = new ItemGridFragment();
+        Bundle args = new Bundle();
+        args.putString("sessionId", sessionId);
+        newFragment.setArguments(args);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
@@ -61,7 +62,23 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         if (fragment instanceof JoinFragment) {
             JoinFragment joinFragment = (JoinFragment) fragment;
             joinFragment.setSession(this);
+        } else if (fragment instanceof  CreateFragment){
+            CreateFragment createFragment = (CreateFragment) fragment;
+            createFragment.setUsername(this);
         }
+    }
+
+    @Override
+    public void sessionCreated(String sessionId, String token) {
+        ControllerFragment newFragment = new ControllerFragment();
+        Bundle args = new Bundle();
+        args.putString("sessionId", sessionId);
+        args.putString("token", token);
+        newFragment.setArguments(args);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
 
