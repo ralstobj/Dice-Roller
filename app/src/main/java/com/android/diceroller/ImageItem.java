@@ -16,7 +16,8 @@ public class ImageItem {
         return image;
     }
 
-    public void setImage(Bitmap image) {
+    public void setImage(Bitmap image)
+    {
         this.image = image;
     }
 

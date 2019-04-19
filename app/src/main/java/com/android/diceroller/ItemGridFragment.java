@@ -17,15 +17,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.android.diceroller.data.model.CreatorInfo;
 import com.android.diceroller.data.model.Dice;
-import com.android.diceroller.data.model.DiceIds;
-import com.android.diceroller.data.model.DiceTypes;
 import com.android.diceroller.data.model.Session;
-import com.android.diceroller.data.model.SessionInfo;
-import com.android.diceroller.data.model.Username;
 import com.android.diceroller.data.remote.ApiUtils;
 import com.android.diceroller.data.remote.DiceService;
+import com.android.diceroller.utils.ColumnCalculator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -34,6 +30,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,12 +41,14 @@ import static android.content.ContentValues.TAG;
 public class ItemGridFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     private OnFragmentInteractionListener mListener;
-    private GridView gridView;
-    private GridViewAdapter gridAdapter;
+    private RecyclerView rvDice;
+    private RecyclerView.LayoutManager rvLayoutManager;
+    private ImageAdapter imageAdapter;
     private BroadcastReceiver receiver;
     private String currentSession = "R6M6M";
     private DiceService mService;
     public ItemGridFragment() {
+
     }
 
     @Override
@@ -85,7 +85,10 @@ public class ItemGridFragment extends Fragment implements AdapterView.OnItemClic
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
                 new IntentFilter("firebase")
         );
-
+        rvDice = rootView.findViewById(R.id.gridView);
+        int mNoOfColumns = ColumnCalculator.calculateNoOfColumns(rootView.getContext(),101);
+        rvLayoutManager = new GridLayoutManager(getActivity(),mNoOfColumns);
+        rvDice.setLayoutManager(rvLayoutManager);
         getDice(currentSession);
         return rootView;
     }
@@ -140,9 +143,8 @@ public class ItemGridFragment extends Fragment implements AdapterView.OnItemClic
             public void onResponse(Call<Session> call, Response<Session> response) {
 
                 if(response.isSuccessful()) {
-                    gridView = getView().findViewById(R.id.gridView);
-                    gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, getData(response.body().getDice()));
-                    gridView.setAdapter(gridAdapter);
+                    imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
+                    rvDice.setAdapter(imageAdapter);
                     //Log.d("MainActivity", "posts loaded from API");
                 }else {
                     int statusCode  = response.code();
@@ -155,88 +157,6 @@ public class ItemGridFragment extends Fragment implements AdapterView.OnItemClic
         });
     }
 
-    public void deleteSession(String token, String sessionId) {
-        SessionInfo sessionInfo = new SessionInfo(token,sessionId);
-        mService.deleteSession(sessionInfo).enqueue(new Callback<Session>() {
-            @Override
-            public void onResponse(Call<Session> call, Response<Session> response) {
 
-                if(response.isSuccessful()) {
-                    //TODO: Check if fail or success and do something
-                }else {
-                    int statusCode  = response.code();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Session> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void addDice(String token, String sessionId, List<Integer>types){
-        DiceTypes diceTypes = new DiceTypes(token, types);
-        mService.addDice(sessionId,diceTypes).enqueue(new Callback<Session>() {
-            @Override
-            public void onResponse(Call<Session> call, Response<Session> response) {
-
-                if(response.isSuccessful()) {
-                    gridView = getView().findViewById(R.id.gridView);
-                    gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, getData(response.body().getDice()));
-                    gridView.setAdapter(gridAdapter);
-                }else {
-                    int statusCode  = response.code();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Session> call, Throwable t) {
-
-            }
-        });
-    }
-    public void rollDice(String token, String sessionId, List<Integer>ids){
-        DiceIds diceIds = new DiceIds(token, ids);
-        mService.rollDice(sessionId,diceIds).enqueue(new Callback<Session>() {
-            @Override
-            public void onResponse(Call<Session> call, Response<Session> response) {
-
-                if(response.isSuccessful()) {
-                    gridView = getView().findViewById(R.id.gridView);
-                    gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, getData(response.body().getDice()));
-                    gridView.setAdapter(gridAdapter);
-                }else {
-                    int statusCode  = response.code();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Session> call, Throwable t) {
-
-            }
-        });
-    }
-    public void deleteDice(String token, String sessionId, List<Integer>ids){
-        DiceIds diceIds = new DiceIds(token,ids);
-        mService.deleteDice(sessionId,diceIds).enqueue(new Callback<Session>() {
-            @Override
-            public void onResponse(Call<Session> call, Response<Session> response) {
-
-                if(response.isSuccessful()) {
-                    gridView = getView().findViewById(R.id.gridView);
-                    gridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item_layout, getData(response.body().getDice()));
-                    gridView.setAdapter(gridAdapter);
-                }else {
-                    int statusCode  = response.code();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Session> call, Throwable t) {
-
-            }
-        });
-    }
 
 }
