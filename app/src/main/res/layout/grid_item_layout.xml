@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dice_grid_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:background="@drawable/grid_color_selector"
     android:orientation="vertical"
-    android:padding="5dp" >
+    android:padding="5dp">
 
     <ImageView
         android:id="@+id/dice_image"
         android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/dice_type_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/dice_image"
-        android:layout_alignTop="@id/dice_image"
-        android:layout_alignRight="@id/dice_image"
-        android:layout_alignBottom="@id/dice_image"
-        android:layout_margin="1dp"
-        android:textSize="12sp"
-        android:gravity="center" />
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="1dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        app:fontFamily="@font/convergence"
+        app:layout_constraintBottom_toBottomOf="@id/dice_image"
+        app:layout_constraintLeft_toLeftOf="@id/dice_image"
+        app:layout_constraintRight_toRightOf="@id/dice_image"
+        app:layout_constraintTop_toTopOf="@id/dice_image" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

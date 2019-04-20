@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.android.diceroller.data.model.Dice;
@@ -63,6 +61,7 @@ public class ControllerFragment extends Fragment {
         mService = ApiUtils.getDiceService();
         //Setup adapter
         rvDice = rootView.findViewById(R.id.gridView);
+        rvDice.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         int mNoOfColumns = ColumnCalculator.calculateNoOfColumns(rootView.getContext(),110);
         rvLayoutManager = new GridLayoutManager(getActivity(),mNoOfColumns);
         rvDice.setLayoutManager(rvLayoutManager);
@@ -102,6 +101,7 @@ public class ControllerFragment extends Fragment {
 
                 if(response.isSuccessful()) {
                     imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
+                    imageAdapter.setHasStableIds(true);
                     rvDice.setAdapter(imageAdapter);
                 }else {
                     int statusCode  = response.code();
@@ -122,6 +122,7 @@ public class ControllerFragment extends Fragment {
 
                 if(response.isSuccessful()) {
                     imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
+                    imageAdapter.setHasStableIds(true);
                     rvDice.setAdapter(imageAdapter);
                 }else {
                     int statusCode  = response.code();
@@ -142,6 +143,7 @@ public class ControllerFragment extends Fragment {
 
                 if(response.isSuccessful()) {
                     imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
+                    imageAdapter.setHasStableIds(true);
                     rvDice.setAdapter(imageAdapter);
                 }else {
                     int statusCode  = response.code();

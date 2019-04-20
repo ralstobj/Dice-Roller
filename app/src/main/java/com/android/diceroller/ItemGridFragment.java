@@ -71,9 +71,8 @@ public class ItemGridFragment extends Fragment implements AdapterView.OnItemClic
             @Override
             public void onReceive(Context context, Intent intent) {
                 try {
-                    String sessionId= intent.getStringExtra("sessionId");
-                    if(sessionId.equals(currentSession)) {
-                        System.out.println("Hello world");
+                    String sessionId = intent.getStringExtra("sessionId");
+                    if(sessionId.equals(currentSession)){
                         getDice(sessionId);
                     }
                 } catch (Exception e) {
@@ -86,7 +85,7 @@ public class ItemGridFragment extends Fragment implements AdapterView.OnItemClic
                 new IntentFilter("firebase")
         );
         rvDice = rootView.findViewById(R.id.gridView);
-        int mNoOfColumns = ColumnCalculator.calculateNoOfColumns(rootView.getContext(),101);
+        int mNoOfColumns = ColumnCalculator.calculateNoOfColumns(rootView.getContext(),110);
         rvLayoutManager = new GridLayoutManager(getActivity(),mNoOfColumns);
         rvDice.setLayoutManager(rvLayoutManager);
         getDice(currentSession);

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
@@ -24,9 +25,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         this.mainActivityContext = mainActivityContext;
         this.imageItemArrayList = imageArrayList;
     }
-
-    //TODO(15): Complete each method as mentioned below
-
 
     @Override
     public ImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -55,10 +53,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         return imageItemArrayList.size();
     }
 
+    @Override
+    public void setHasStableIds(boolean hasStableIds) {
+        super.setHasStableIds(hasStableIds);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         //Used to work with the elements of our custom UI.
 
-        RelativeLayout relativeDiceItem;
+        ConstraintLayout relativeDiceItem;
 
         ImageView diceImage;
         TextView diceRolledValue;

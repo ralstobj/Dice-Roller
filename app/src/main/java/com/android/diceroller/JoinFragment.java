@@ -29,7 +29,7 @@ public class JoinFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        callback.sessionEntered(joinSessionEditText.getText().toString());
+        callback.sessionEntered(joinSessionEditText.getText().toString().toUpperCase());
     }
 
     public void setSession(OnSessionEnteredListener callback) {
