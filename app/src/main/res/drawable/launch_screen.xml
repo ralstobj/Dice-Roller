@@ -7,7 +7,7 @@
         <bitmap
             android:gravity="center"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@mipmap/ic_launcher" />
 
     </item>
 
