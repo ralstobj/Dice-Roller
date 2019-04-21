@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.diceroller.data.model.Dice;
@@ -24,7 +23,6 @@ import com.android.diceroller.data.remote.DiceService;
 import com.android.diceroller.utils.Utility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -99,7 +97,8 @@ public class ViewerFragment extends Fragment {
 
     private void initialSetup(View v, List<Dice> dice){
         sessionIdTextView = v.findViewById(R.id.sessionId_viewer_text);
-        sessionIdTextView.setText("Session Code: " + currentSession);
+        String text = getResources().getString(R.string.session_code) + " " + currentSession;
+        sessionIdTextView.setText(text);
         Toolbar toolbar = v.findViewById(R.id.viewer_toolbar);
         toolbar.inflateMenu(R.menu.exit_session_menu);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -115,16 +114,11 @@ public class ViewerFragment extends Fragment {
             }
         });
         rvDice = v.findViewById(R.id.gridView);
-        int mNoOfColumns = Utility.calculateNoOfColumns(v.getContext(),110);
+        int mNoOfColumns = Utility.calculateNoOfColumns(v.getContext(),120);
         rvLayoutManager = new GridLayoutManager(getActivity(),mNoOfColumns);
         rvDice.setLayoutManager(rvLayoutManager);
         imageAdapter = new ImageAdapter(getActivity(), getData(dice));
         rvDice.setAdapter(imageAdapter);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
     }
 
     @Override
@@ -138,7 +132,7 @@ public class ViewerFragment extends Fragment {
         return Utility.getData(getContext(), dice);
     }
 
-    public void getDice(String sessionId) {
+    private void getDice(String sessionId) {
         mService.getDice(sessionId).enqueue(new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {

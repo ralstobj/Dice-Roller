@@ -20,7 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class JoinFragment extends Fragment implements View.OnClickListener {
-    OnSessionEnteredListener callback;
+    private OnSessionEnteredListener callback;
     private Button joinSessionButton;
     private EditText joinSessionEditText;
     private DiceService mService;
@@ -55,10 +55,10 @@ public class JoinFragment extends Fragment implements View.OnClickListener {
     }
 
     public interface OnSessionEnteredListener {
-        public void sessionEntered(String sessionId, String dice);
+        void sessionEntered(String sessionId, String dice);
     }
 
-    public void getDice(final String sessionId) {
+    private void getDice(final String sessionId) {
         mService.getDice(sessionId).enqueue(new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {

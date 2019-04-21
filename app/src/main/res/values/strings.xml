@@ -1,11 +1,20 @@
 <resources>
     <string name="app_name">Dice Roller</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
     <string name="msg_subscribed">Subscribed to diceUser</string>
     <string name="msg_unsubscribed">UnSubscribed to diceUser</string>
     <string name="msg_subscribe_failed">Failed to subscribe to diceUser</string>
     <string name="msg_unsubscribed_failed">Failed to unsubscribe to diceUser</string>
+    <string name="end_session">END SESSION</string>
+    <string name="exit_session">LEAVE SESSION</string>
+    <string name="session_code">Session Code: </string>
+    <string name="add_dice">ADD</string>
+    <string name="delete_dice">DELETE</string>
+    <string name="create_session">CREATE</string>
+    <string name="username">Enter Username</string>
+    <string name="dice">Dice</string>
+    <string name="enter">Enter Session Code</string>
+    <string name="join">JOIN</string>
+    <string name="welcome">Welcome to Rollie</string>
 </resources>

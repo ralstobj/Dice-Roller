@@ -27,26 +27,26 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
-                android:fontFamily="sans-serif-light"
-                android:text="Session Code: "
-                android:textSize="24sp" />
+                android:text="@string/session_code"
+                android:textSize="24sp"
+                app:fontFamily="sans-serif-light" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/gridView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:columnWidth="100dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:layout_marginBottom="85dp"
+            android:clickable="true"
+            android:columnWidth="100dp"
             android:drawSelectorOnTop="true"
             android:focusable="true"
             android:gravity="center"
             android:numColumns="auto_fit"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="5dp"
-            android:layout_marginBottom="85dp"/>
+            android:verticalSpacing="5dp" />
     </LinearLayout>
 
 
@@ -78,8 +78,8 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="ADD"
+            android:layout_gravity="start"
+            android:text="@string/add_dice"
             android:textColor="@color/White" />
 
         <Button
@@ -87,8 +87,8 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="DELETE"
+            android:layout_gravity="end"
+            android:text="@string/delete_dice"
             android:textColor="@color/White" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/delete_session"
-        android:title="END SESSION"
+        android:title="@string/end_session"
         app:showAsAction="never" />
 
 

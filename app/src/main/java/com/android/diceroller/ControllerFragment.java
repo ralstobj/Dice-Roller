@@ -6,9 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.diceroller.data.model.Dice;
 import com.android.diceroller.data.model.DiceIds;
@@ -66,7 +64,8 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
 
     private void initialSetup(View v){
         sessionIdTextView = v.findViewById(R.id.sessionId_text);
-        sessionIdTextView.setText("Session Code: " + sessionId);
+        String text = getResources().getString(R.string.session_code) + " " + sessionId;
+        sessionIdTextView.setText(text);
         addButton = v.findViewById(R.id.add_dice);
         deleteButton = v.findViewById(R.id.delete_dice);
         rollButton = v.findViewById(R.id.roll_dice);
@@ -89,7 +88,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
             }
         });
         rvDice = v.findViewById(R.id.gridView);
-        int mNoOfColumns = Utility.calculateNoOfColumns(v.getContext(),110);
+        int mNoOfColumns = Utility.calculateNoOfColumns(v.getContext(),120);
         rvLayoutManager = new GridLayoutManager(getActivity(),mNoOfColumns);
         rvDice.setLayoutManager(rvLayoutManager);
 
@@ -114,7 +113,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
         });
     }
 
-    public void addDice(String token, String sessionId, List<Integer> types){
+    private void addDice(String token, String sessionId, List<Integer> types){
         DiceTypes diceTypes = new DiceTypes(token, types);
         mService.addDice(sessionId,diceTypes).enqueue(new Callback<Session>() {
             @Override
@@ -142,7 +141,6 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
 
                 if(response.isSuccessful()) {
                     imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
-                    imageAdapter.setHasStableIds(true);
                     rvDice.setAdapter(imageAdapter);
                 }else {
                     int statusCode  = response.code();
@@ -163,7 +161,6 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
 
                 if(response.isSuccessful()) {
                     imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
-                    imageAdapter.setHasStableIds(true);
                     rvDice.setAdapter(imageAdapter);
                 }else {
                     int statusCode  = response.code();
@@ -176,7 +173,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
             }
         });
     }
-    public void getDice(String sessionId) {
+    private void getDice(String sessionId) {
         mService.getDice(sessionId).enqueue(new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
@@ -215,7 +212,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
     }
 
 
-    public void showNumberPicker(View view){
+    private void showNumberPicker(View view){
         NumberPickerDialog newFragment = new NumberPickerDialog();
         newFragment.setDiceAdder(this);
         newFragment.show(getFragmentManager(), "dice picker");

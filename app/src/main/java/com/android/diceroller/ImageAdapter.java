@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
 
-    Context mainActivityContext;
+    private final Context mainActivityContext;
     private ArrayList<ImageItem> imageItemArrayList = new ArrayList<ImageItem>();
 
     public ImageAdapter(Context mainActivityContext, ArrayList<ImageItem> imageArrayList) {
@@ -65,20 +65,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         return imageItemArrayList.size();
     }
 
-    @Override
-    public void setHasStableIds(boolean hasStableIds) {
-        super.setHasStableIds(hasStableIds);
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         //Used to work with the elements of our custom UI.
 
-        ConstraintLayout relativeDiceItem;
+        final ConstraintLayout relativeDiceItem;
 
-        ImageView diceImage;
-        TextView diceRolledValue;
+        final ImageView diceImage;
+        final TextView diceRolledValue;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             diceRolledValue = itemView.findViewById(R.id.dice_type_text);

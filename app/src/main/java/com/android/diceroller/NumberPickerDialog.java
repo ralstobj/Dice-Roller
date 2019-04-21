@@ -4,17 +4,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
 import androidx.fragment.app.DialogFragment;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 public class NumberPickerDialog extends DialogFragment {
-    OnDiceAdded callback;
+    private OnDiceAdded callback;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LinearLayout LL = new LinearLayout(getActivity());
@@ -62,6 +59,6 @@ public class NumberPickerDialog extends DialogFragment {
     }
 
     public interface OnDiceAdded {
-        public void diceAdded(int type, int quantity);
+        void diceAdded(int type, int quantity);
     }
 }

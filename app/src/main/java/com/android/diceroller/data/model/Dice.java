@@ -3,10 +3,6 @@ package com.android.diceroller.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONObject;
-
-import androidx.annotation.NonNull;
-
 public class Dice {
 
     @SerializedName("diceId")

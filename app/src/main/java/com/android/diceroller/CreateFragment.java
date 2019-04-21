@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 public class CreateFragment extends Fragment implements View.OnClickListener {
 
-    OnSessionCreatedListener callback;
+    private OnSessionCreatedListener callback;
     private Button createSessionButton;
     private EditText createSessionEditText;
     private DiceService mService;
@@ -55,7 +55,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener {
         this.callback = callback;
     }
 
-    public void createSession(String user){
+    private void createSession(String user){
         Username username = new Username(user);
         mService.createSession(username).enqueue(new Callback<CreatorInfo>() {
             @Override
@@ -81,7 +81,7 @@ public class CreateFragment extends Fragment implements View.OnClickListener {
     }
 
     public interface OnSessionCreatedListener {
-        public void sessionCreated(String sessionId, String token);
+        void sessionCreated(String sessionId, String token);
     }
 
 }

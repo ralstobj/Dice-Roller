@@ -18,8 +18,7 @@ public class Utility {
     public static int calculateNoOfColumns(Context context, float columnWidthDp) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
-        int noOfColumns = (int) (screenWidthDp / columnWidthDp + 0.5);
-        return noOfColumns;
+        return (int) (screenWidthDp / columnWidthDp + 0.5);
     }
 
     public static ArrayList<ImageItem> getData(Context context, List<Dice> dice){
