@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.android.diceroller.data.model.Dice;
 import com.android.diceroller.data.model.Session;
@@ -40,9 +37,8 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class ViewerFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class ViewerFragment extends Fragment{
 
-    private OnFragmentInteractionListener mListener;
     private RecyclerView rvDice;
     private RecyclerView.LayoutManager rvLayoutManager;
     private ImageAdapter imageAdapter;
@@ -70,7 +66,6 @@ public class ViewerFragment extends Fragment implements AdapterView.OnItemClickL
         rvDice.setLayoutManager(rvLayoutManager);
         imageAdapter = new ImageAdapter(getActivity(), getData(dice));
         rvDice.setAdapter(imageAdapter);
-        //getDice(currentSession);
         return rootView;
     }
 
@@ -78,29 +73,13 @@ public class ViewerFragment extends Fragment implements AdapterView.OnItemClickL
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
         FirebaseMessaging.getInstance().unsubscribeFromTopic("diceUser");
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-            mListener.onItemSelected(id);
-        }
     }
 
     private ArrayList<ImageItem> getData(List<Dice> dice) {

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 
-public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, JoinFragment.OnSessionEnteredListener, CreateFragment.OnSessionCreatedListener {
+public class MainActivity extends AppCompatActivity implements JoinFragment.OnSessionEnteredListener, CreateFragment.OnSessionCreatedListener {
 
 
 
@@ -28,12 +28,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, landingFragment).commit();
         }
     }
-
-    @Override
-    public void onItemSelected(long id) {
-
-    }
-
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {

@@ -1,8 +1,6 @@
 package com.android.diceroller;
 
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +12,6 @@ import com.android.diceroller.data.model.Session;
 import com.android.diceroller.data.remote.ApiUtils;
 import com.android.diceroller.data.remote.DiceService;
 import com.google.gson.Gson;
-
-import org.json.JSONObject;
 
 import androidx.fragment.app.Fragment;
 import retrofit2.Call;
