@@ -4,37 +4,46 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/viewer_toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@android:color/transparent"
-        android:layout_marginTop="12dp"/>
-
-    <TextView
-        android:id="@+id/sessionId_viewer_text"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Session Code: "
-        android:textSize="24sp"
-        android:fontFamily="sans-serif-light"
-        android:layout_marginTop="24dp"/>
+        android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/gridView"
-        app:layout_anchor="@+id/viewer_toolbar"
-        app:layout_anchorGravity="bottom"
-        android:layout_gravity="bottom"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:columnWidth="100dp"
-        android:drawSelectorOnTop="true"
-        android:gravity="center"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="5dp"
-        android:focusable="true"
-        android:clickable="true"/>
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/viewer_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="12dp"
+                android:background="@android:color/transparent" />
+
+            <TextView
+                android:id="@+id/sessionId_viewer_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Session Code: "
+                android:textSize="24sp" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:columnWidth="100dp"
+            android:layout_margin="5dp"
+            android:drawSelectorOnTop="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dp"/>
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

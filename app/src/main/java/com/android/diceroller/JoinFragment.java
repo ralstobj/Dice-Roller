@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.android.diceroller.data.model.Session;
 import com.android.diceroller.data.remote.ApiUtils;
 import com.android.diceroller.data.remote.DiceService;
+import com.android.diceroller.utils.Utility;
 import com.google.gson.Gson;
 
 import androidx.fragment.app.Fragment;
@@ -43,7 +44,9 @@ public class JoinFragment extends Fragment implements View.OnClickListener {
         if(joinSessionEditText.getText().toString().trim().equals("")) {
             Toast.makeText(v.getContext(), "Please Enter A Session Code", Toast.LENGTH_SHORT).show();
         }else{
-            getDice(joinSessionEditText.getText().toString().toUpperCase());
+            if(Utility.isConnectedToNetwork(getContext())) {
+                getDice(joinSessionEditText.getText().toString().toUpperCase());
+            }
         }
     }
 

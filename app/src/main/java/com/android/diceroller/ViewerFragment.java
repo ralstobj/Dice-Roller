@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.diceroller.data.model.Dice;
@@ -23,6 +24,7 @@ import com.android.diceroller.data.remote.DiceService;
 import com.android.diceroller.utils.Utility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -40,16 +42,16 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class ViewerFragment extends Fragment{
+public class ViewerFragment extends Fragment {
 
     private RecyclerView rvDice;
     private RecyclerView.LayoutManager rvLayoutManager;
+    private TextView sessionIdTextView;
     private ImageAdapter imageAdapter;
     private BroadcastReceiver receiver;
     private String currentSession = "R6M6M";
     private DiceService mService;
-    private boolean firstLoad = true;
-    private TextView sessionIdTextView;
+
     public ViewerFragment() {
 
     }
@@ -62,10 +64,43 @@ public class ViewerFragment extends Fragment{
         Gson gson = new Gson();
         Type diceListType = new TypeToken<ArrayList<Dice>>(){}.getType();
         List<Dice> dice = gson.fromJson(diceString,diceListType);
-        sessionIdTextView = rootView.findViewById(R.id.sessionId_viewer_text);
-        sessionIdTextView.setText("Session Code: " + currentSession);
+        initialSetup(rootView,dice);
         mService = ApiUtils.getDiceService();
-        Toolbar toolbar = rootView.findViewById(R.id.viewer_toolbar);
+        FirebaseMessaging.getInstance().subscribeToTopic("diceUser")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = getActivity().getString(R.string.msg_subscribed);
+                        if (!task.isSuccessful()) {
+                            msg = getActivity().getString(R.string.msg_subscribe_failed);
+                        }
+                        Log.d(TAG, msg);
+                    }
+                });
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                try {
+                    String sessionId = intent.getStringExtra("sessionId");
+                    if(sessionId.equals(currentSession)){
+                        getDice(sessionId);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        };
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
+                new IntentFilter("firebase")
+        );
+        return rootView;
+    }
+
+    private void initialSetup(View v, List<Dice> dice){
+        sessionIdTextView = v.findViewById(R.id.sessionId_viewer_text);
+        sessionIdTextView.setText("Session Code: " + currentSession);
+        Toolbar toolbar = v.findViewById(R.id.viewer_toolbar);
         toolbar.inflateMenu(R.menu.exit_session_menu);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -79,15 +114,13 @@ public class ViewerFragment extends Fragment{
                 }
             }
         });
-        rvDice = rootView.findViewById(R.id.gridView);
-        int mNoOfColumns = Utility.calculateNoOfColumns(rootView.getContext(),110);
+        rvDice = v.findViewById(R.id.gridView);
+        int mNoOfColumns = Utility.calculateNoOfColumns(v.getContext(),110);
         rvLayoutManager = new GridLayoutManager(getActivity(),mNoOfColumns);
         rvDice.setLayoutManager(rvLayoutManager);
         imageAdapter = new ImageAdapter(getActivity(), getData(dice));
         rvDice.setAdapter(imageAdapter);
-        return rootView;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -102,39 +135,7 @@ public class ViewerFragment extends Fragment{
     }
 
     private ArrayList<ImageItem> getData(List<Dice> dice) {
-       ArrayList<ImageItem> imageItems = Utility.getData(getContext(), dice);
-        if(firstLoad){
-            firstLoad = false;
-            FirebaseMessaging.getInstance().subscribeToTopic("diceUser")
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            String msg = getActivity().getString(R.string.msg_subscribed);
-                            if (!task.isSuccessful()) {
-                                msg = getActivity().getString(R.string.msg_subscribe_failed);
-                            }
-                            Log.d(TAG, msg);
-                        }
-                    });
-            receiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    try {
-                        String sessionId = intent.getStringExtra("sessionId");
-                        if(sessionId.equals(currentSession)){
-                            getDice(sessionId);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            };
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
-                    new IntentFilter("firebase")
-            );
-        }
-        return imageItems;
+        return Utility.getData(getContext(), dice);
     }
 
     public void getDice(String sessionId) {
@@ -157,5 +158,7 @@ public class ViewerFragment extends Fragment{
             }
         });
     }
+
+
 
 }

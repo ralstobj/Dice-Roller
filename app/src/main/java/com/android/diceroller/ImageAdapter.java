@@ -40,12 +40,18 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Bitmap diceImage = imageItemArrayList.get(position).getImage();
         String currentRolledValue = imageItemArrayList.get(position).getTitle();
-        if(currentRolledValue.equals("20")){
-            holder.diceImage.setBackgroundColor(mainActivityContext.getResources().getColor(R.color.Gold));
-        }else if(currentRolledValue.equals("1")){
-            holder.diceImage.setBackgroundColor(mainActivityContext.getResources().getColor(R.color.Crimson));
+        int type = imageItemArrayList.get(position).getDiceType();
+        if(type == 20) {
+            if (currentRolledValue.equals("20")) {
+                holder.diceImage.setBackgroundColor(mainActivityContext.getResources().getColor(R.color.Gold));
+            } else if (currentRolledValue.equals("1")) {
+                holder.diceImage.setBackgroundColor(mainActivityContext.getResources().getColor(R.color.Crimson));
+            }
+            else{
+                holder.diceImage.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
         }else{
-            holder.diceImage.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                holder.diceImage.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
 
         holder.diceRolledValue.setText(currentRolledValue);

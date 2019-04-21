@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.android.diceroller.utils.Utility;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -31,15 +33,17 @@ public class LandingFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.landing_join:
-                JoinFragment joinFragment = new JoinFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, joinFragment).addToBackStack(null).commit();
-                break;
-            case R.id.landing_create:
-                CreateFragment createFragment = new CreateFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, createFragment).addToBackStack(null).commit();
-                break;
+        if(Utility.isConnectedToNetwork(getContext())) {
+            switch (v.getId()) {
+                case R.id.landing_join:
+                    JoinFragment joinFragment = new JoinFragment();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, joinFragment).addToBackStack(null).commit();
+                    break;
+                case R.id.landing_create:
+                    CreateFragment createFragment = new CreateFragment();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, createFragment).addToBackStack(null).commit();
+                    break;
+            }
         }
     }
 }

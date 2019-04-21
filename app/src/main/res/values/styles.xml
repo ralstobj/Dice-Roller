@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
@@ -13,7 +13,6 @@
     <!-- The launcher theme. It sets the main window background to the launch_screen drawable -->
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/launch_screen</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item> -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
-
 </resources>

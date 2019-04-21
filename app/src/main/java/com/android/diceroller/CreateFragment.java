@@ -12,6 +12,7 @@ import com.android.diceroller.data.model.CreatorInfo;
 import com.android.diceroller.data.model.Username;
 import com.android.diceroller.data.remote.ApiUtils;
 import com.android.diceroller.data.remote.DiceService;
+import com.android.diceroller.utils.Utility;
 
 import androidx.fragment.app.Fragment;
 import retrofit2.Call;
@@ -44,7 +45,9 @@ public class CreateFragment extends Fragment implements View.OnClickListener {
         if(createSessionEditText.getText().toString().trim().equals("")) {
             Toast.makeText(v.getContext(), "Enter A Username", Toast.LENGTH_SHORT).show();
         }else{
-            createSession(createSessionEditText.getText().toString().toUpperCase());
+            if(Utility.isConnectedToNetwork(getContext())) {
+                createSession(createSessionEditText.getText().toString().toUpperCase());
+            }
         }
     }
 
