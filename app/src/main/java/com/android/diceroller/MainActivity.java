@@ -1,19 +1,15 @@
 package com.android.diceroller;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 
-public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, JoinFragment.OnSessionEnteredListener, CreateFragment.OnSessionCreatedListener, ViewerFragment.OnNonExistentSessionListener {
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, JoinFragment.OnSessionEnteredListener, CreateFragment.OnSessionCreatedListener {
 
 
 
@@ -49,10 +45,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     }
 
     @Override
-    public void sessionEntered(String sessionId) {
+    public void sessionEntered(String sessionId, String dice) {
         ViewerFragment newFragment = new ViewerFragment();
         Bundle args = new Bundle();
         args.putString("sessionId", sessionId);
+        args.putString("dice", dice);
         newFragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment);
@@ -68,9 +65,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         } else if (fragment instanceof  CreateFragment){
             CreateFragment createFragment = (CreateFragment) fragment;
             createFragment.setUsername(this);
-        } else if (fragment instanceof ViewerFragment){
-            ViewerFragment viewerFragment = (ViewerFragment) fragment;
-            viewerFragment.setNonExist(this);
         }
     }
 
@@ -87,13 +81,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         transaction.commit();
     }
 
-    @Override
-    public void sessionNotExist(String msg) {
-        boolean popped = getSupportFragmentManager().popBackStackImmediate();
-        if(popped){
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        }
-    }
 }
 
 

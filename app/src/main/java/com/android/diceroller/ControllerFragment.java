@@ -53,6 +53,7 @@ public class ControllerFragment extends Fragment {
         sessionIdTextView.setText("Session Code: " + sessionId);
         //Create Button App Bar
         bar = rootView.findViewById(R.id.bar);
+        setHasOptionsMenu(true);
         ((AppCompatActivity)getActivity()).setSupportActionBar(bar);
         //Connect the Dice Service to the interface
         mService = ApiUtils.getDiceService();
@@ -66,8 +67,9 @@ public class ControllerFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.bottom_menu, menu);
+    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.bottom_menu, menu);
     }
 
     public void deleteSession(String token, String sessionId) {
@@ -155,17 +157,6 @@ public class ControllerFragment extends Fragment {
     }
 
     private ArrayList<ImageItem> getData(List<Dice> dice) {
-        ArrayList<ImageItem> imageItems = new ArrayList<>();
-        for (int i = 0; i < dice.size(); i++) {
-            String diceType = "d" + Integer.toString(dice.get(i).getDiceType());
-            if(diceType.equals("d100")){
-                diceType = "d10";
-            }
-            int id = getResources().getIdentifier(diceType , "drawable", getActivity().getPackageName());
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),id);
-            String value = Integer.toString(dice.get(i).getRolledValue());
-            imageItems.add(new ImageItem(bitmap, value));
-        }
-        return imageItems;
+        return Utility.getData(getContext(), dice);
     }
 }

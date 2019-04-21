@@ -24,8 +24,11 @@ import com.android.diceroller.utils.Utility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +43,6 @@ import static android.content.ContentValues.TAG;
 public class ViewerFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     private OnFragmentInteractionListener mListener;
-    private OnNonExistentSessionListener callback;
     private RecyclerView rvDice;
     private RecyclerView.LayoutManager rvLayoutManager;
     private ImageAdapter imageAdapter;
@@ -56,12 +58,19 @@ public class ViewerFragment extends Fragment implements AdapterView.OnItemClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.grid, container, false);
         currentSession = getArguments().getString("sessionId");
+        String diceString = getArguments().getString("dice");
+        Gson gson = new Gson();
+        Type diceListType = new TypeToken<ArrayList<Dice>>(){}.getType();
+        List<Dice> dice = gson.fromJson(diceString,diceListType);
+
         mService = ApiUtils.getDiceService();
         rvDice = rootView.findViewById(R.id.gridView);
         int mNoOfColumns = Utility.calculateNoOfColumns(rootView.getContext(),110);
         rvLayoutManager = new GridLayoutManager(getActivity(),mNoOfColumns);
         rvDice.setLayoutManager(rvLayoutManager);
-        getDice(currentSession);
+        imageAdapter = new ImageAdapter(getActivity(), getData(dice));
+        rvDice.setAdapter(imageAdapter);
+        //getDice(currentSession);
         return rootView;
     }
 
@@ -95,17 +104,7 @@ public class ViewerFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
     private ArrayList<ImageItem> getData(List<Dice> dice) {
-        ArrayList<ImageItem> imageItems = new ArrayList<>();
-            for (int i = 0; i < dice.size(); i++) {
-                String diceType = "d" + Integer.toString(dice.get(i).getDiceType());
-                if(diceType.equals("d100")){
-                    diceType = "d10";
-                }
-                int id = getResources().getIdentifier(diceType , "drawable", getActivity().getPackageName());
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(),id);
-                String value = Integer.toString(dice.get(i).getRolledValue());
-                imageItems.add(new ImageItem(bitmap, value));
-            }
+       ArrayList<ImageItem> imageItems = Utility.getData(getContext(), dice);
         if(firstLoad){
             firstLoad = false;
             FirebaseMessaging.getInstance().subscribeToTopic("diceUser")
@@ -147,12 +146,8 @@ public class ViewerFragment extends Fragment implements AdapterView.OnItemClickL
 
                 if(response.isSuccessful()) {
                     String status = response.body().getStatus();
-                    if(status.equals("FAIL")){
-                        callback.sessionNotExist(response.body().getMsg());
-                    }else {
                         imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
                         rvDice.setAdapter(imageAdapter);
-                    }
                     //Log.d("MainActivity", "posts loaded from API");
                 }else {
                     int statusCode  = response.code();
@@ -163,13 +158,6 @@ public class ViewerFragment extends Fragment implements AdapterView.OnItemClickL
             public void onFailure(Call<Session> call, Throwable t) {
             }
         });
-    }
-
-    public void setNonExist(OnNonExistentSessionListener callback) {
-        this.callback = callback;
-    }
-    public interface OnNonExistentSessionListener {
-        public void sessionNotExist(String msg);
     }
 
 }
