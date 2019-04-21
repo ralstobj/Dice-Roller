@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.android.diceroller.data.model.Dice;
 import com.android.diceroller.data.model.DiceIds;
 import com.android.diceroller.data.model.DiceTypes;
@@ -17,12 +16,10 @@ import com.android.diceroller.data.model.Session;
 import com.android.diceroller.data.model.SessionInfo;
 import com.android.diceroller.data.remote.ApiUtils;
 import com.android.diceroller.data.remote.DiceService;
-import com.android.diceroller.utils.ColumnCalculator;
+import com.android.diceroller.utils.Utility;
 import com.google.android.material.bottomappbar.BottomAppBar;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -62,7 +59,7 @@ public class ControllerFragment extends Fragment {
         //Setup adapter
         rvDice = rootView.findViewById(R.id.gridView);
         rvDice.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        int mNoOfColumns = ColumnCalculator.calculateNoOfColumns(rootView.getContext(),110);
+        int mNoOfColumns = Utility.calculateNoOfColumns(rootView.getContext(),110);
         rvLayoutManager = new GridLayoutManager(getActivity(),mNoOfColumns);
         rvDice.setLayoutManager(rvLayoutManager);
         return rootView;

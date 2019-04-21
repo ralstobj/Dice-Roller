@@ -15,13 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
 
 import com.android.diceroller.data.model.Dice;
 import com.android.diceroller.data.model.Session;
 import com.android.diceroller.data.remote.ApiUtils;
 import com.android.diceroller.data.remote.DiceService;
-import com.android.diceroller.utils.ColumnCalculator;
+import com.android.diceroller.utils.Utility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -38,16 +37,18 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class ItemGridFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class ViewerFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     private OnFragmentInteractionListener mListener;
+    private OnNonExistentSessionListener callback;
     private RecyclerView rvDice;
     private RecyclerView.LayoutManager rvLayoutManager;
     private ImageAdapter imageAdapter;
     private BroadcastReceiver receiver;
     private String currentSession = "R6M6M";
     private DiceService mService;
-    public ItemGridFragment() {
+    private boolean firstLoad = true;
+    public ViewerFragment() {
 
     }
 
@@ -56,36 +57,8 @@ public class ItemGridFragment extends Fragment implements AdapterView.OnItemClic
         View rootView = inflater.inflate(R.layout.grid, container, false);
         currentSession = getArguments().getString("sessionId");
         mService = ApiUtils.getDiceService();
-        FirebaseMessaging.getInstance().subscribeToTopic("diceUser")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = getActivity().getString(R.string.msg_subscribed);
-                        if (!task.isSuccessful()) {
-                            msg = getActivity().getString(R.string.msg_subscribe_failed);
-                        }
-                        Log.d(TAG, msg);
-                    }
-                });
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                try {
-                    String sessionId = intent.getStringExtra("sessionId");
-                    if(sessionId.equals(currentSession)){
-                        getDice(sessionId);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        };
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
-                new IntentFilter("firebase")
-        );
         rvDice = rootView.findViewById(R.id.gridView);
-        int mNoOfColumns = ColumnCalculator.calculateNoOfColumns(rootView.getContext(),110);
+        int mNoOfColumns = Utility.calculateNoOfColumns(rootView.getContext(),110);
         rvLayoutManager = new GridLayoutManager(getActivity(),mNoOfColumns);
         rvDice.setLayoutManager(rvLayoutManager);
         getDice(currentSession);
@@ -133,6 +106,37 @@ public class ItemGridFragment extends Fragment implements AdapterView.OnItemClic
                 String value = Integer.toString(dice.get(i).getRolledValue());
                 imageItems.add(new ImageItem(bitmap, value));
             }
+        if(firstLoad){
+            firstLoad = false;
+            FirebaseMessaging.getInstance().subscribeToTopic("diceUser")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = getActivity().getString(R.string.msg_subscribed);
+                            if (!task.isSuccessful()) {
+                                msg = getActivity().getString(R.string.msg_subscribe_failed);
+                            }
+                            Log.d(TAG, msg);
+                        }
+                    });
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    try {
+                        String sessionId = intent.getStringExtra("sessionId");
+                        if(sessionId.equals(currentSession)){
+                            getDice(sessionId);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            };
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
+                    new IntentFilter("firebase")
+            );
+        }
         return imageItems;
     }
 
@@ -142,8 +146,13 @@ public class ItemGridFragment extends Fragment implements AdapterView.OnItemClic
             public void onResponse(Call<Session> call, Response<Session> response) {
 
                 if(response.isSuccessful()) {
-                    imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
-                    rvDice.setAdapter(imageAdapter);
+                    String status = response.body().getStatus();
+                    if(status.equals("FAIL")){
+                        callback.sessionNotExist(response.body().getMsg());
+                    }else {
+                        imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
+                        rvDice.setAdapter(imageAdapter);
+                    }
                     //Log.d("MainActivity", "posts loaded from API");
                 }else {
                     int statusCode  = response.code();
@@ -156,6 +165,11 @@ public class ItemGridFragment extends Fragment implements AdapterView.OnItemClic
         });
     }
 
-
+    public void setNonExist(OnNonExistentSessionListener callback) {
+        this.callback = callback;
+    }
+    public interface OnNonExistentSessionListener {
+        public void sessionNotExist(String msg);
+    }
 
 }

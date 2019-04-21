@@ -1,11 +1,14 @@
 package com.android.diceroller;
 
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -29,7 +32,11 @@ public class JoinFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        callback.sessionEntered(joinSessionEditText.getText().toString().toUpperCase());
+        if(joinSessionEditText.getText().toString().trim().equals("")) {
+            Toast.makeText(v.getContext(), "Please Enter A Session Code", Toast.LENGTH_SHORT).show();
+        }else{
+            callback.sessionEntered(joinSessionEditText.getText().toString().toUpperCase());
+        }
     }
 
     public void setSession(OnSessionEnteredListener callback) {

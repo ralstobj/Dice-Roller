@@ -28,9 +28,11 @@ public class DiceIds {
     public void setDiceIds(List<Integer> diceIds) {
         this.diceIds = diceIds;
     }
+
     public void addDiceIds(Integer diceId){
         this.diceIds.add(diceId);
     }
+
     public DiceIds(String token, List<Integer> diceIds) {
         this.token = token;
         this.diceIds = diceIds;
