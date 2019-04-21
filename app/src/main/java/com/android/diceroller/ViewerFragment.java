@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.diceroller.data.model.Dice;
 import com.android.diceroller.data.model.Session;
@@ -46,20 +49,36 @@ public class ViewerFragment extends Fragment{
     private String currentSession = "R6M6M";
     private DiceService mService;
     private boolean firstLoad = true;
+    private TextView sessionIdTextView;
     public ViewerFragment() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.grid, container, false);
+        View rootView = inflater.inflate(R.layout.viewer_layout, container, false);
         currentSession = getArguments().getString("sessionId");
         String diceString = getArguments().getString("dice");
         Gson gson = new Gson();
         Type diceListType = new TypeToken<ArrayList<Dice>>(){}.getType();
         List<Dice> dice = gson.fromJson(diceString,diceListType);
-
+        sessionIdTextView = rootView.findViewById(R.id.sessionId_viewer_text);
+        sessionIdTextView.setText("Session Code: " + currentSession);
         mService = ApiUtils.getDiceService();
+        Toolbar toolbar = rootView.findViewById(R.id.viewer_toolbar);
+        toolbar.inflateMenu(R.menu.exit_session_menu);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.exit_session:
+                        //TODO: Call end session
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
         rvDice = rootView.findViewById(R.id.gridView);
         int mNoOfColumns = Utility.calculateNoOfColumns(rootView.getContext(),110);
         rvLayoutManager = new GridLayoutManager(getActivity(),mNoOfColumns);

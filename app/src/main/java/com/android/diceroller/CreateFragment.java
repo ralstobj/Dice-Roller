@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.diceroller.data.model.CreatorInfo;
 import com.android.diceroller.data.model.Username;
@@ -40,7 +41,11 @@ public class CreateFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        createSession(createSessionEditText.getText().toString());
+        if(createSessionEditText.getText().toString().trim().equals("")) {
+            Toast.makeText(v.getContext(), "Enter A Username", Toast.LENGTH_SHORT).show();
+        }else{
+            createSession(createSessionEditText.getText().toString().toUpperCase());
+        }
     }
 
     public void setUsername(OnSessionCreatedListener callback) {
@@ -54,7 +59,12 @@ public class CreateFragment extends Fragment implements View.OnClickListener {
             public void onResponse(Call<CreatorInfo> call, Response<CreatorInfo> response) {
 
                 if(response.isSuccessful()) {
-                    callback.sessionCreated(response.body().getSessionId(), response.body().getToken());
+                    String status = response.body().getStatus();
+                    if(status.equals("FAIL")){
+                        Toast.makeText(getContext(), response.body().getMsg() , Toast.LENGTH_SHORT).show();
+                    }else {
+                        callback.sessionCreated(response.body().getSessionId(), response.body().getToken());
+                    }
                 }else {
                     int statusCode  = response.code();
                 }

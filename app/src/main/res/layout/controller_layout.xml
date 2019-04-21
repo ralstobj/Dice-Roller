@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/controller_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="12dp"/>
+
     <TextView
         android:id="@+id/sessionId_text"
         android:layout_gravity="center_horizontal"
@@ -15,6 +23,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gridView"
+        app:layout_anchor="@+id/controller_toolbar"
+        app:layout_anchorGravity="bottom"
+        android:layout_gravity="bottom"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -33,13 +44,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:fabAlignmentMode="end"
+        app:fabAlignmentMode="center"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        android:src="@drawable/ic_dice"
+        android:src="@drawable/roll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_anchor="@id/bar"/>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginLeft="32dp">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:textColor="@color/White"
+            android:text="ADD"
+            android:layout_gravity="left" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/White"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_gravity="right"
+            android:text="DELETE" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

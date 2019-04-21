@@ -2,11 +2,11 @@ package com.android.diceroller;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.android.diceroller.data.model.Dice;
 import com.android.diceroller.data.model.DiceIds;
 import com.android.diceroller.data.model.DiceTypes;
@@ -18,7 +18,8 @@ import com.android.diceroller.utils.Utility;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import java.util.ArrayList;
 import java.util.List;
-import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,24 +52,30 @@ public class ControllerFragment extends Fragment {
         sessionIdTextView.setText("Session Code: " + sessionId);
         //Create Button App Bar
         bar = rootView.findViewById(R.id.bar);
-        setHasOptionsMenu(true);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(bar);
+        Toolbar toolbar = rootView.findViewById(R.id.controller_toolbar);
+        toolbar.inflateMenu(R.menu.end_session_menu);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.delete_session:
+                        //TODO: Call end session
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
         //Connect the Dice Service to the interface
         mService = ApiUtils.getDiceService();
         //Setup adapter
         rvDice = rootView.findViewById(R.id.gridView);
-        rvDice.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         int mNoOfColumns = Utility.calculateNoOfColumns(rootView.getContext(),110);
         rvLayoutManager = new GridLayoutManager(getActivity(),mNoOfColumns);
         rvDice.setLayoutManager(rvLayoutManager);
         return rootView;
     }
 
-    @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.bottom_menu, menu);
-    }
 
     public void deleteSession(String token, String sessionId) {
         SessionInfo sessionInfo = new SessionInfo(token,sessionId);
@@ -157,4 +164,5 @@ public class ControllerFragment extends Fragment {
     private ArrayList<ImageItem> getData(List<Dice> dice) {
         return Utility.getData(getContext(), dice);
     }
+
 }
