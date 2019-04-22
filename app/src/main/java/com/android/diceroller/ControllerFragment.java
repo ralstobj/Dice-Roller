@@ -1,5 +1,6 @@
 package com.android.diceroller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.diceroller.data.model.CreatorInfo;
 import com.android.diceroller.data.model.Dice;
 import com.android.diceroller.data.model.DiceIds;
 import com.android.diceroller.data.model.DiceTypes;
@@ -43,6 +45,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
     private Button addButton;
     private Button deleteButton;
     private DiceService mService;
+    private final List<Integer> diceIdsList = new ArrayList<>();
 
     public ControllerFragment(){
 
@@ -80,7 +83,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.delete_session:
-                        //TODO: Call end session
+                        deleteSession(token, sessionId);
                         return true;
                     default:
                         return false;
@@ -100,7 +103,10 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
             public void onResponse(Call<Session> call, Response<Session> response) {
 
                 if(response.isSuccessful()) {
-                    //TODO: Check if fail or success and do something
+                    String status = response.body().getStatus();
+                    if(status.equals("OK")){
+                        Utility.clearStack(getFragmentManager());
+                    }
                 }else {
                     int statusCode  = response.code();
                 }
@@ -122,6 +128,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
                 if(response.isSuccessful()) {
                     imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
                     rvDice.setAdapter(imageAdapter);
+                    diceIdAdder(response.body().getDice());
                 }else {
                     int statusCode  = response.code();
                 }
@@ -142,6 +149,8 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
                 if(response.isSuccessful()) {
                     imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
                     rvDice.setAdapter(imageAdapter);
+                    diceIdsList.clear();
+                    diceIdAdder(response.body().getDice());
                 }else {
                     int statusCode  = response.code();
                 }
@@ -162,6 +171,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
                 if(response.isSuccessful()) {
                     imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
                     rvDice.setAdapter(imageAdapter);
+                    diceIdAdder(response.body().getDice());
                 }else {
                     int statusCode  = response.code();
                 }
@@ -182,6 +192,8 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
                     String status = response.body().getStatus();
                     imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
                     rvDice.setAdapter(imageAdapter);
+                    diceIdsList.clear();
+                    diceIdAdder(response.body().getDice());
                 }else {
                     int statusCode  = response.code();
                 }
@@ -201,6 +213,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
         if(Utility.isConnectedToNetwork(getContext())) {
             switch (v.getId()) {
                 case R.id.roll_dice:
+                    rollDice(token, sessionId, diceIdsList);
                     break;
                 case R.id.add_dice:
                     showNumberPicker(v);
@@ -250,4 +263,11 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
         }
         addDice(token,sessionId,types);
     }
+
+    private void diceIdAdder(List<Dice> holder){
+        diceIdsList.clear();
+        for(Dice ini : holder)
+            diceIdsList.add(ini.getDiceId());
+    }
+
 }

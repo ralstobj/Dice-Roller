@@ -106,7 +106,7 @@ public class ViewerFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.exit_session:
-                        //TODO: Call end session
+                        Utility.clearStack(getFragmentManager());
                         return true;
                     default:
                         return false;

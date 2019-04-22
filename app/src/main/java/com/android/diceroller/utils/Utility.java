@@ -13,6 +13,9 @@ import com.android.diceroller.data.model.Dice;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 public class Utility {
 
     public static int calculateNoOfColumns(Context context, float columnWidthDp) {
@@ -48,5 +51,25 @@ public class Utility {
         }
 
         return isConnected;
+    }
+
+    public static void clearStack(FragmentManager fm) {
+        //Here we are clearing back stack fragment entries
+        int backStackEntry = fm.getBackStackEntryCount();
+        if (backStackEntry > 0) {
+            for (int i = 0; i < backStackEntry; i++) {
+                fm.popBackStackImmediate();
+            }
+        }
+
+        //Here we are removing all the fragment that are shown here
+        if (fm.getFragments() != null && fm.getFragments().size() > 0) {
+            for (int i = 0; i < fm.getFragments().size()-1; i++) {
+                Fragment mFragment = fm.getFragments().get(i);
+                if (mFragment != null) {
+                    fm.beginTransaction().remove(mFragment).commit();
+                }
+            }
+        }
     }
 }
