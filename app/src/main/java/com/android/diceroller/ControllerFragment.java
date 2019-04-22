@@ -32,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ControllerFragment extends Fragment implements View.OnClickListener, NumberPickerDialog.OnDiceAdded {
+public class ControllerFragment extends Fragment implements View.OnClickListener, NumberPickerDialog.OnDiceAdded, DiceViewHolder.DiceActionListener {
 
     private RecyclerView rvDice;
     private RecyclerView.LayoutManager rvLayoutManager;
@@ -126,7 +126,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
             public void onResponse(Call<Session> call, Response<Session> response) {
 
                 if(response.isSuccessful()) {
-                    imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
+                    imageAdapter = new ImageAdapter(getData(response.body().getDice()), ControllerFragment.this);
                     rvDice.setAdapter(imageAdapter);
                     diceIdAdder(response.body().getDice());
                 }else {
@@ -147,7 +147,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
             public void onResponse(Call<Session> call, Response<Session> response) {
 
                 if(response.isSuccessful()) {
-                    imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
+                    imageAdapter = new ImageAdapter(getData(response.body().getDice()), ControllerFragment.this);
                     rvDice.setAdapter(imageAdapter);
                     diceIdsList.clear();
                     diceIdAdder(response.body().getDice());
@@ -169,7 +169,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
             public void onResponse(Call<Session> call, Response<Session> response) {
 
                 if(response.isSuccessful()) {
-                    imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
+                    imageAdapter = new ImageAdapter(getData(response.body().getDice()), ControllerFragment.this);
                     rvDice.setAdapter(imageAdapter);
                     diceIdAdder(response.body().getDice());
                 }else {
@@ -190,7 +190,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
 
                 if(response.isSuccessful()) {
                     String status = response.body().getStatus();
-                    imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
+                    imageAdapter = new ImageAdapter(getData(response.body().getDice()), ControllerFragment.this);
                     rvDice.setAdapter(imageAdapter);
                     diceIdsList.clear();
                     diceIdAdder(response.body().getDice());
@@ -270,4 +270,17 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
             diceIdsList.add(ini.getDiceId());
     }
 
+    @Override
+    public void getDice(Dice d) {
+        List<Integer> die = new ArrayList<>();
+        die.add(d.getDiceId());
+        rollDice(token,sessionId,die);
+    }
+
+    @Override
+    public void deleteDice(Dice d) {
+        List<Integer> die = new ArrayList<>();
+        die.add(d.getDiceId());
+        deleteDice(token, sessionId, die);
+    }
 }

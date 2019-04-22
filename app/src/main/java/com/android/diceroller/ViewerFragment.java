@@ -117,7 +117,7 @@ public class ViewerFragment extends Fragment {
         int mNoOfColumns = Utility.calculateNoOfColumns(v.getContext(),120);
         rvLayoutManager = new GridLayoutManager(getActivity(),mNoOfColumns);
         rvDice.setLayoutManager(rvLayoutManager);
-        imageAdapter = new ImageAdapter(getActivity(), getData(dice));
+        imageAdapter = new ImageAdapter(getData(dice), null);
         rvDice.setAdapter(imageAdapter);
     }
 
@@ -139,7 +139,7 @@ public class ViewerFragment extends Fragment {
 
                 if(response.isSuccessful()) {
                     String status = response.body().getStatus();
-                        imageAdapter = new ImageAdapter(getActivity(), getData(response.body().getDice()));
+                        imageAdapter = new ImageAdapter(getData(response.body().getDice()), null);
                         rvDice.setAdapter(imageAdapter);
                     //Log.d("MainActivity", "posts loaded from API");
                 }else {
@@ -152,7 +152,4 @@ public class ViewerFragment extends Fragment {
             }
         });
     }
-
-
-
 }

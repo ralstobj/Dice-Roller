@@ -2,16 +2,16 @@ package com.android.diceroller;
 
 import android.graphics.Bitmap;
 
+import com.android.diceroller.data.model.Dice;
+
 public class ImageItem {
     private Bitmap image;
-    private String title;
-    private int diceType;
+    private Dice dice;
 
-    public ImageItem(Bitmap image, String title, int diceType) {
+    public ImageItem(Bitmap image, Dice dice) {
         super();
         this.image = image;
-        this.title = title;
-        this.diceType = diceType;
+        this.dice = dice;
     }
 
     public Bitmap getImage() {
@@ -23,19 +23,11 @@ public class ImageItem {
         this.image = image;
     }
 
-    public String getTitle() {
-        return title;
+    public Dice getDice() {
+        return dice;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getDiceType() {
-        return diceType;
-    }
-
-    public void setDiceType(int diceType) {
-        this.diceType = diceType;
+    public void setDice(Dice dice) {
+        this.dice = dice;
     }
 }

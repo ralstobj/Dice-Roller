@@ -34,8 +34,7 @@ public class Utility {
             }
             int id = context.getResources().getIdentifier(diceType , "drawable", context.getPackageName());
             Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),id);
-            String value = Integer.toString(dice.get(i).getRolledValue());
-            imageItems.add(new ImageItem(bitmap, value, type));
+            imageItems.add(new ImageItem(bitmap, dice.get(i)));
         }
         return imageItems;
     }
