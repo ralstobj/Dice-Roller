@@ -171,6 +171,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
                 if(response.isSuccessful()) {
                     imageAdapter = new ImageAdapter(getData(response.body().getDice()), ControllerFragment.this);
                     rvDice.setAdapter(imageAdapter);
+                    diceIdsList.clear();
                     diceIdAdder(response.body().getDice());
                 }else {
                     int statusCode  = response.code();
@@ -219,6 +220,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
                     showNumberPicker(v);
                     break;
                 case R.id.delete_dice:
+                    deleteDice(token, sessionId, diceIdsList);
                     break;
             }
         }
