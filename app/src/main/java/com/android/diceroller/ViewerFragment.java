@@ -56,7 +56,7 @@ public class ViewerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.viewer_layout, container, false);
+        final View rootView = inflater.inflate(R.layout.viewer_layout, container, false);
         currentSession = getArguments().getString("sessionId");
         String diceString = getArguments().getString("dice");
         Gson gson = new Gson();
@@ -80,8 +80,13 @@ public class ViewerFragment extends Fragment {
             public void onReceive(Context context, Intent intent) {
                 try {
                     String sessionId = intent.getStringExtra("sessionId");
-                    if(sessionId.equals(currentSession)){
-                        getDice(sessionId);
+                    String status = intent.getStringExtra("status");
+                    if(status.equals("active")){
+                        if(sessionId.equals(currentSession)){
+                            getDice(sessionId);
+                        }
+                    } else{
+                        showSessionEndedDialog(rootView);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -151,5 +156,9 @@ public class ViewerFragment extends Fragment {
             public void onFailure(Call<Session> call, Throwable t) {
             }
         });
+    }
+    private void showSessionEndedDialog(View view){
+        SessionEnded sessionEnded = new SessionEnded();
+        sessionEnded.show(getFragmentManager(), "session ended");
     }
 }

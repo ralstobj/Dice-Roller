@@ -10,7 +10,7 @@
     <string name="exit_session">Leave Session</string>
     <string name="session_code">Session Code: </string>
     <string name="add_dice">ADD</string>
-    <string name="delete_dice">DELETE</string>
+    <string name="delete_dice">DELETE ALL</string>
     <string name="create_session">CREATE</string>
     <string name="username">Enter Username</string>
     <string name="dice">Dice</string>

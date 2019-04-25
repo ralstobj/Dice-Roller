@@ -233,12 +233,13 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
         newFragment.show(getFragmentManager(), "dice picker");
     }
 
+
     @Override
     public void diceAdded(int type, int quantity) {
         int diceType;
         switch (type){
             case 1:
-                diceType = 4;
+                diceType = 20;
                 break;
             case 2:
                 diceType = 6;
@@ -253,7 +254,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
                 diceType = 12;
                 break;
             case 6:
-                diceType = 20;
+                diceType = 4;
                 break;
             default:
                 diceType = 20;

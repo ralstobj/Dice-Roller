@@ -20,7 +20,7 @@ public class NumberPickerDialog extends DialogFragment {
 
         diceTypePicker.setMinValue(1);
         diceTypePicker.setMaxValue(6);
-        diceTypePicker.setDisplayedValues(new String[] { "D4", "D6","D8","D10","D12","D20"});
+        diceTypePicker.setDisplayedValues(new String[] { "D20", "D6","D8","D10","D12","D4"});
 
         final NumberPicker diceAmountPicker = new NumberPicker(getActivity());
         diceAmountPicker.setMinValue(1);
